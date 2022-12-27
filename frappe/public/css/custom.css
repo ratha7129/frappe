@@ -1,0 +1,390 @@
+.field {color: #000 !important;}
+.print-format-section .field .field-controls div span {color: #000 !important;}
+.widget.quick-list-widget-box .widget-body .quick-list-item div.title { 
+    color: #333333!important;
+}
+
+
+body.full-width .container{
+    width: 98% !important;
+}
+
+.modal-content{min-width: 700px!important;}
+
+ 
+
+*::-webkit-scrollbar-thumb {
+    background: #999999!important;
+    border-radius: 6px;
+}
+[data-page-route=Workspaces] .layout-main .layout-side-section::-webkit-scrollbar-thumb, 
+[data-page-route=Workspaces] .layout-main .layout-main-section-wrapper::-webkit-scrollbar-thumb{
+    background: #9f9f9f;
+}
+
+
+.navbar-nav .dropdown-help{
+    display: none!important;
+}
+.navbar{
+    background: #e24c4c!important;
+}
+#navbar-breadcrumbs a{
+    color: #e1e1e1 !important;
+}
+
+
+.layout-side-section {
+    background: hsl(0deg 0% 88%)!important;
+    padding-top: 10px;
+    border-radius: 10px;
+}
+.widget.shortcut-widget-box{
+    padding: 16px !important;
+}
+
+
+
+[data-page-route=Workspaces] .layout-main-section  {
+    background-color: #e1e1e1!important;
+}
+.spacer{
+    background-color: #e1e1e1!important;
+}
+
+.page-form{
+    background: #e35959!important;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.list-row-head {
+    background: #c6dcef!important;
+    margin-left: -5px!important;
+    margin-right: -5px!important;
+}
+ 
+.frappe-card .list-paging-area, .frappe-card .footnote-area {
+ 
+    background: #9dc7eb;
+    margin-left: -5px;
+    margin-right: -5px;
+}
+
+.form-tabs-list {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background: #2490ef;
+    color: #fff;
+}
+
+.form-tabs-list .form-tabs .nav-item .nav-link.active{
+    
+    border-bottom: 2px solid #f9f9f9!important;
+    color: #edeeef!important;
+}
+.form-tabs-list .form-tabs .nav-item .nav-link {
+    color: #bfc5cb!important;
+}
+
+.form-section .section-head .collapse-indicator, .form-dashboard-section .section-head .collapse-indicator{
+    float: right;
+}
+.form-section .section-head, .form-dashboard-section .section-head {
+    
+    background: #cdd9db;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.form-section .section-body, .form-dashboard-section .section-body {
+ 
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom: solid 1px #9d9797f0;
+}
+
+.form-links .document-link .document-link-badge .count, .form-links .document-link .report-link-badge .count {
+    background-color: #e24c4c;
+}
+
+.form-in-grid .form-section .section-head{
+    padding: 10px!important;
+}
+
+.grid-row-open .section-body{
+    padding: 10px!important;
+}
+
+.list-row .level-right, .list-row-head .level-right{
+    flex:none!important;
+}
+
+.grid-column-br .datatable .dt-row{
+    height: 50px!important;
+}
+.grid-column-br    .dt-cell{
+    height: 50px!important;
+}
+
+
+/* 
++===== <> =====+
+     Start Login
++===== <> =====+
+*/
+
+body.custom-bd{
+    background-color: #FFF!important;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.main-wrapper-login{
+    position: relative;
+}
+.auth-content .form-control, .auth-content  .btn.btn-primary{
+    padding: 10px 16px;
+}
+.for-login .page-card{
+    max-width: unset;
+    margin: unset;
+    border-radius: unset;
+    box-shadow: unset!important;
+}
+.for-login .page-card form{
+    max-width: 100%;
+}
+.for-login-content{
+    width: 100%;
+    padding: unset;
+}
+.login-content-main{
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.auth-sidebar {
+    position: relative;
+    color: #000;
+}
+.auth-content {
+    width: 100%;
+    max-width: 416px;
+    margin: auto;
+}
+.auth-content .form-group #login_email{
+    padding-right: 36px;
+}
+
+.auth-content .form-group #login_password{
+    padding-right: 75px;
+}
+.auth-content .form-group .field-icon.email-icon,
+.auth-content .form-group .field-icon.password-icon
+{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.auth-content .form-group{
+    position: relative
+}
+
+.auth-content .toggle-password.text-muted{
+    position: absolute;
+    top: 7px;
+    right: 34px;
+    text-align: left;
+    cursor: pointer;
+}
+
+@media (min-width: 1100px){
+    .auth-sidebar header {
+        padding: 64px 64px 30px;
+    }
+}
+@media (min-width: 960px){
+    .auth-sidebar header {
+        max-width: 100%;
+        margin: 0;
+        padding: 40px 40px 30px;
+    }
+}
+.auth-sidebar header {
+    max-width: 416px;
+    margin: 0 auto;
+    padding: 48px 20px 0;
+    text-align: left;
+}
+@media (min-width: 447px) and (max-width: 959px) {
+    .auth-sidebar header {
+        padding: 48px 0px 0;
+    }
+    .main-wrapper-login{
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex-pack: justify;
+        justify-content: center;
+        height: 100%;
+        overflow: auto;
+    }
+}
+@media (min-width: 300px) and (max-width: 446px) {
+    .main-wrapper-login{
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex-pack: justify;
+        justify-content: center;
+        height: 100%;
+        overflow: auto;
+    }
+}
+.auth-sidebar header .logo {
+    display: block;
+    margin-bottom: 30px;
+    width: 100px;
+}
+
+.auth-sidebar header h1 {
+    display: none;
+    color: inherit;
+    font-size: 32px;
+    line-height: 38px;
+    font-weight: bold;
+    margin: 0 0 10px 0!important;
+}
+@media (min-width: 960px) {
+    .auth-sidebar header h1 {
+        display: block;
+        padding-right: 30px;
+    }
+}
+@media (max-height: 850px) {
+    .auth-sidebar header h1 {
+        font-size: 25px;
+        line-height: 30px;
+    }
+}
+@media (min-width: 960px){
+    .auth-sidebar{
+        background: #dce0e3;
+        color: #475560;
+        -ms-flex-positive: 0;
+        flex-grow: 0;
+        width: 450px;
+    }
+    .auth-sidebar .auth-sidebar-content {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        height: 100%;
+    }
+    .auth-content {
+        margin: 0;
+        padding: 30px 60px 60px;
+    }
+    .for-login-content {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex: 1;
+        flex: 1;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        overflow: auto;
+    }
+    .login-content-main{
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        -ms-flex-align: center;
+        align-items: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+    }
+    .main-wrapper-login{
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        height: 100%;
+        overflow: hidden;
+    }
+}
+
+.auth-sidebar .artwork {
+    display: none;
+}
+@media (min-width: 960px) {
+    .auth-sidebar .artwork {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+    }
+}
+.auth-sidebar .artwork .artwork-image {
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: cover;
+}
+@media (max-width: 961px), (max-height: 730px) {
+    .auth-sidebar .artwork .artwork-image {
+        display: none;
+    }
+}
+
+@media (min-height: 960px) {
+    .auth-sidebar .artwork .artwork-image {
+        max-height: 60%;
+    }
+}
+.auth-sidebar .artwork .artwork-image {
+    background-image: url(/assets/erpnext/images/artwork-login.png);
+}
+
+.auth-sidebar .artwork .artwork-attribution {
+    margin: 0;
+    padding: 25px 64px 35px;
+    color: inherit;
+    font-size: 14px;
+    line-height: 14px;
+}
+.setup-wizard-slide .control-label{
+     color: #333 !important;
+}
+
+.setup-wizard-slide .btn{
+    color: #fff !important;
+    background-color: #007fff!important;
+}
+
+
+
+@media (min-width: 1100px){
+    .auth-sidebar {
+        width: 514px;
+    }
+}
+@media (min-width: 576px){
+    .login-content-main{
+        padding-top: 0!important;
+        padding-bottom:0 !important;
+        background-color: #fff;
+        box-shadow: unset;
+    }
+}
+
