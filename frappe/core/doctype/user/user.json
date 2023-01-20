@@ -109,7 +109,8 @@
   "api_key",
   "generate_keys",
   "column_break_65",
-  "api_secret"
+  "api_secret",
+  "allow_pre_print_receipt"
  ],
  "fields": [
   {
@@ -823,6 +824,12 @@
   {
    "fieldname": "column_break_31",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_pre_print_receipt",
+   "fieldtype": "Check",
+   "label": "Allow Pre Print Receipt"
   }
  ],
  "icon": "fa fa-user",
@@ -885,7 +892,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2022-08-11 16:37:07.152356",
+ "modified": "2023-01-20 09:24:16.354074",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
