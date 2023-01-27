@@ -175,7 +175,7 @@ def get_report_fields(filters):
 def get_warehouses(filters):
 	if filters.get("warehouse"):
 		return frappe.db.get_list("Warehouse",filters=[{"name":["in",filters.get("warehouse")]}],fields=["name","warehouse_code"])
-	warehouses =   frappe.db.get_list("Warehouse",fields=["name","warehouse_code"])
+	warehouses =   frappe.db.get_list("Warehouse",fields=["name","warehouse_code"],filters={"is_group":"0"})
 	
  
 	return warehouses
