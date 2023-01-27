@@ -93,6 +93,7 @@ def get_report_fields(filters):
 		{"sql_expression":"a.item_code","fieldname":"item_code","label":"Item Code","fieldtype":"Data","align":"left","width":100},
 		{"sql_expression":"a.item_name","fieldname":"item_name","label":"Item Name","fieldtype":"Data","align":"left","width":250},
 		{"sql_expression":"a.stock_uom","fieldname":"stock_uom","label":"Unit","fieldtype":"Data","align":"left","width":75},
+		{"sql_expression":"a.image","fieldname":"image","label":"Image","fieldtype":"Data","align":"left","width":75},
 	]
 	#dynamic field by warehouse
 	warehouses = get_warehouses(filters)
