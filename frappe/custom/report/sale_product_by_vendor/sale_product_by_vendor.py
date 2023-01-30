@@ -10,8 +10,8 @@ def execute(filters=None):
 def get_filters(filters):
 	data= "b.docstatus=1 and b.posting_date between '{}' AND '{}'".format(filters.start_date,filters.end_date)
 	if filters.get("company"): data = data + " and b.company = '{}'".format(filters.company)
-	if filters.get("supplier"):data = data +	" and a.supplier in (" + get_list(filters,"supplier") + ")"
-	if filters.get("branch"):data = data +	" and a.branch in (" + get_list(filters,"branch") + ")"
+	if filters.get("supplier"):data = data + " and a.supplier in (" + get_list(filters,"supplier") + ")"
+	if filters.get("branch"):data = data +	" and b.branch in (" + get_list(filters,"branch") + ")"
 	if filters.get("warehouse"): data = data + " and a.warehouse = '{}'".format(filters.warehouse)
 	if filters.get("not_set_supplier"): data = data + " and a.supplier_name is null"
 	if filters.get("item_group"):data = data +	" and (coalesce(a.parent_item_group,(SELECT parent_item_group FROM `tabItem Group` WHERE NAME = a.item_group)) in (" + get_list(filters,"item_group") + ")" + " or a.item_group in (" + get_list(filters,"item_group") + "))"
