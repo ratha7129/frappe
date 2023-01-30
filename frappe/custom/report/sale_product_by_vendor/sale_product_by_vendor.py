@@ -122,5 +122,5 @@ def get_data(filters):
 	return data
 
 def get_list(filters,name):
-	data = ','.join("'{0}'".format(x) for x in filters.get(name))
+	data = ','.join("'{0}'".format(x.replace("'", "''")) for x in filters.get(name))
 	return data
