@@ -49,8 +49,8 @@ def get_data(filters):
 							a.item_code supplier,
 							a.item_name,
 							a.stock_uom,
-							coalesce(SUM(a.qty * a.conversion_factor),0) sale_qty,
-							(SELECT sum(actual_qty) FROM `tabBin` c where c.item_code = a.item_code and c.warehouse = a.warehouse) boh
+							coalesce(SUM(coalesce(a.qty,0) * coalesce(a.conversion_factor,0)),0) sale_qty,
+							coalesce((SELECT sum(coalesce(actual_qty,0)) FROM `tabBin` c where c.item_code = a.item_code and c.warehouse = a.warehouse),0) boh
 						FROM `tabSales Invoice Item` a
 							INNER JOIN `tabSales Invoice` b ON b.name = a.parent									
 						WHERE {0} and coalesce(a.supplier,'Not Set') = '{4}'
