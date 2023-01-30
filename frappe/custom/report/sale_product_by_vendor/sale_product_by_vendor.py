@@ -84,7 +84,7 @@ def get_data(filters):
 							coalesce(SUM(a.qty * a.conversion_factor),0) sale_qty
 						FROM `tabSales Invoice Item` a
 							INNER JOIN `tabSales Invoice` b ON b.name = a.parent									
-						WHERE {0} and a.item_group = '{4}'
+						WHERE {0} and a.item_group = "{4}"
 						GROUP BY
 							a.item_group, 
 							a.supplier_name,
