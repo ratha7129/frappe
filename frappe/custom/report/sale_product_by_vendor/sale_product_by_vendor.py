@@ -22,9 +22,13 @@ def get_filters(filters):
 def get_columns(filters):
 	columns = []
 	columns.append({'fieldname':'supplier','label':"Supplier",'fieldtype':'Data','align':'left','width':200})
+	columns.append({'fieldname':'item_category','label':"Category",'fieldtype':'Data','align':'left','width':200})
+	columns.append({'fieldname':'item_code','label':"Item Code",'fieldtype':'Data','align':'left','width':150})
 	columns.append({'fieldname':'item_name','label':"Item Name",'fieldtype':'Data','align':'left','width':350})
+	columns.append({'fieldname':'branch','label':"Branch",'fieldtype':'Data','align':'left','width':200})
 	columns.append({'fieldname':'stock_uom','label':"Unit",'fieldtype':'Data','align':'center','width':100})
 	columns.append({'fieldname':'sale_qty','label':"Sale",'fieldtype':'Data','align':'right','width':100})
+	columns.append({'fieldname':'warehose','label':"Warehouse",'fieldtype':'Data','align':'left','width':200})
 	columns.append({'fieldname':'boh','label':"BOH",'fieldtype':'Data','align':'right','width':100})
 	return columns
 
@@ -46,19 +50,26 @@ def get_data(filters):
 		data.append(dic_p)
 		child_data = ("""
 						SELECT
-							a.item_code supplier,
+							a.parent_item_group supplier,
+							coalesce(a.item_group,'Not Set') item_category,
+							a.item_code,
 							a.item_name,
 							a.stock_uom,
 							coalesce(SUM(coalesce(a.qty,0) * coalesce(a.conversion_factor,0)),0) sale_qty,
-							coalesce((SELECT sum(coalesce(actual_qty,0)) FROM `tabBin` c where c.item_code = a.item_code and c.warehouse = a.warehouse),0) boh
+							coalesce((SELECT sum(coalesce(actual_qty,0)) FROM `tabBin` c where c.item_code = a.item_code and c.warehouse = a.warehouse),0) boh,
+							a.warehouse,
+							b.branch
 						FROM `tabSales Invoice Item` a
 							INNER JOIN `tabSales Invoice` b ON b.name = a.parent									
 						WHERE {0} and coalesce(a.supplier,'Not Set') = '{4}'
 						GROUP BY
+							a.parent_item_group,
+							a.item_group,
 							a.item_code,
 							a.item_name,
 							a.stock_uom,
-							a.warehouse
+							a.warehouse,
+							b.branch
 					""".format(get_filters(filters),filters.start_date,filters.end_date,filters.warehouse,dic_p["supplier"]))
 		child = frappe.db.sql(child_data,as_dict=1)
 		temp=[]
