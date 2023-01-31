@@ -28,7 +28,7 @@ def get_columns(filters):
 	columns.append({'fieldname':'branch','label':"Branch",'fieldtype':'Data','align':'left','width':200})
 	columns.append({'fieldname':'stock_uom','label':"Unit",'fieldtype':'Data','align':'center','width':100})
 	columns.append({'fieldname':'sale_qty','label':"Sale",'fieldtype':'Data','align':'right','width':100})
-	columns.append({'fieldname':'warehose','label':"Warehouse",'fieldtype':'Data','align':'left','width':200})
+	columns.append({'fieldname':'warehouse','label':"Warehouse",'fieldtype':'Data','align':'left','width':200})
 	columns.append({'fieldname':'boh','label':"BOH",'fieldtype':'Data','align':'right','width':100})
 	return columns
 
