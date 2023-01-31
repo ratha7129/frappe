@@ -81,6 +81,7 @@ frappe.ui.form.setup_user_image_event = function(frm) {
 	frm.sidebar.image_wrapper.on('click', '.sidebar-image-change, .sidebar-image-remove', function(e) {
 		let $target = $(e.currentTarget);
 		var field = frm.get_field(frm.meta.image_field);
+		$( "#btn-upload-photo" ).parent().removeClass('opened')
 		if ($target.is('.sidebar-image-change')) {
 			if(!field.$input) {
 				field.make_input();
