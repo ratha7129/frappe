@@ -142,6 +142,12 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldtype": "Select",
 			"options": "None\nbar\nline",
 			"d,efault":"bar"
+		},
+		{
+			"fieldname": "status",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": "\nDraft\nReturn\nCredit Note Issued\nConsolidated\nSubmitted\nPaid\nUnpaid\nUnpaid and Discounted\nOverdue and Discounted\nOverdue\nCancelled",
 		}
 	],
 	"formatter": function(value, row, column, data, default_formatter) {

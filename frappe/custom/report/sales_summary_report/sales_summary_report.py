@@ -272,6 +272,9 @@ def get_conditions(filters,group_filter=None):
 		
 	if filters.get("branch"):
 		conditions += " AND b.branch in %(branch)s"
+	
+	if filters.get("status"):
+		conditions += " AND b.status = %(status)s"
 		
 
 	return conditions
