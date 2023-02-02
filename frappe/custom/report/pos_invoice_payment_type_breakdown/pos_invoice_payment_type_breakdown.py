@@ -56,8 +56,21 @@ def get_report_data(filters):
 				GROUP BY c.mode_of_payment
 				)
 
+				,sale_invoice as(
+				SELECT 
+				a.mode_of_payment,
+				SUM(amount) total_amount
+				FROM `tabSales Invoice Payment` a
+				INNER JOIN `tabSales Invoice` b ON b.name = a.parent
+				WHERE b.posting_date BETWEEN '{0}' and '{1}' and b.company = '{2}' AND id IS null
+				and b.branch = case when '{3}' = 'None' then b.branch else '{3}' end
+				AND parenttype='Sales Invoice' AND b.status='Paid' AND b.docstatus=1 AND b.is_consolidated=0
+				)
+
 				, payment AS(
 				SELECT mode_of_payment,SUM(total_amount) total_amount FROM(
+				select * from sale_invoice
+				union all
 				SELECT * FROM payment_entry
 				UNION all
 				SELECT * FROM set_cash
