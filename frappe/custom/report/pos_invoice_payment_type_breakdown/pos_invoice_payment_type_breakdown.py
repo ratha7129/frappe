@@ -47,7 +47,7 @@ def get_report_data(filters):
 				, payment_entry AS(
 				SELECT 
 				c.mode_of_payment,
-				SUM(b.total_amount - b.outstanding_amount) total_amount
+				SUM(b.allocated_amount) total_amount
 				FROM `tabSales Invoice` a
 				INNER JOIN `tabPayment Entry Reference` b ON b.reference_name = a.name
 				INNER JOIN `tabPayment Entry` c ON c.name = b.parent
