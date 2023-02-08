@@ -593,16 +593,6 @@
    "label": "Disable Data For Sync Notify"
   },
   {
-   "fieldname": "pos_backup_column",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "http://192.168.10.29:5224/api/sync/posbackup",
-   "fieldname": "pos_backup_api_url",
-   "fieldtype": "Data",
-   "label": "POS Backup API URL"
-  },
-  {
    "collapsible": 1,
    "fieldname": "ftp_setting_section",
    "fieldtype": "Section Break",
