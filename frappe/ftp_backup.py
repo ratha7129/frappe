@@ -9,15 +9,9 @@ from frappe.model.document import Document
 from frappe.utils import cstr
 
 @frappe.whitelist()
-def get_system_setting():
-    setting = frappe.get_doc('System Settings')
-    return setting.ftp_url+" / "+setting.ftp_user+" / "+setting.ftp_password
-
-
-@frappe.whitelist()
 def execute_backup_command():
     site_name = cstr(frappe.local.site)
-    folder = '/home/user/pro-bench/sites/' + site_name + '/private/backups'
+    folder = '/home/erpuser/pro-bench/sites/' + site_name + '/private/backups'
     setting = frappe.get_doc('System Settings')
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
