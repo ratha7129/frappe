@@ -11,7 +11,8 @@ from frappe.utils import cstr
 @frappe.whitelist()
 def execute_backup_command():
     site_name = cstr(frappe.local.site)
-    folder = '/home/erpuser/pro-bench/sites/' + site_name + '/private/backups'
+    username = os.environ.get('USER')
+    folder = '/home/'+ username +'/pro-bench/sites/' + site_name + '/private/backups'
     setting = frappe.get_doc('System Settings')
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
