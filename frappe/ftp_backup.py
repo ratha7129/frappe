@@ -9,9 +9,17 @@ from frappe.model.document import Document
 from frappe.utils import cstr
 
 @frappe.whitelist()
+def print_user1():
+    return str(os.environ.get('USER'))
+
+@frappe.whitelist()
+def print_user2():
+    return str(os.getlogin())
+
+@frappe.whitelist()
 def execute_backup_command():
     site_name = cstr(frappe.local.site)
-    username = str(os.environ.get('USER'))
+    username = str(os.getlogin())
     folder = '/home/'+ username +'/pro-bench/sites/' + site_name + '/private/backups'
     setting = frappe.get_doc('System Settings')
     for filename in os.listdir(folder):
