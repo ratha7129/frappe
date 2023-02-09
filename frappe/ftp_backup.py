@@ -9,6 +9,12 @@ from frappe.model.document import Document
 from frappe.utils import cstr
 
 @frappe.whitelist()
+def get_system_setting():
+    setting = frappe.get_doc('System Settings')
+    return setting.ftp_url+" / "+setting.ftp_user+" / "+setting.ftp_password
+
+
+@frappe.whitelist()
 def execute_backup_command():
     site_name = cstr(frappe.local.site)
     folder = '/home/user/pro-bench/sites/' + site_name + '/private/backups'
@@ -27,7 +33,7 @@ def execute_backup_command():
 
     time.sleep(2)
 
-    session = ftplib.FTP_TLS("43.225.55.137","eftp@ebackup.inccloudserver.com","6ICJ3~fN0q-;#$2(j,N{=;]hHA5&}4+oIyVd")
+    session = ftplib.FTP_TLS(setting.ftp_url,setting.ftp_user,setting.ftp_password)
     if site_name in session.nlst():
         session.cwd(site_name)
     else : 
