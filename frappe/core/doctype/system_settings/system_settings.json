@@ -610,7 +610,7 @@
   },
   {
    "fieldname": "ftp_password",
-   "fieldtype": "Password",
+   "fieldtype": "Data",
    "label": "Password"
   },
   {
