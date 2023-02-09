@@ -8,6 +8,7 @@ import time
 from frappe.model.document import Document
 from frappe.utils import cstr
 
+@frappe.whitelist()
 def execute_backup_command():
     site_name = cstr(frappe.local.site)
     folder = '/home/erpuser/pro-bench/sites/' + site_name + '/private/backups'
@@ -26,7 +27,9 @@ def execute_backup_command():
 
     time.sleep(2)
 
-    session = ftplib.FTP(setting.ftp_url,setting.ftp_user,setting.ftp_password)
+    session = ftplib.FTP_TLS(setting.ftp_url)
+    session.login(setting.ftp_user,setting.ftp_password)
+    session.prot_p()
     if site_name in session.nlst():
         session.cwd(site_name)
     else : 
