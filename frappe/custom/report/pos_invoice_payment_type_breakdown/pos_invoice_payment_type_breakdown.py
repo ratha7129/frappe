@@ -44,17 +44,15 @@ def get_report_data(filters):
 				and branch = case when '{3}' = 'None' then branch else '{3}' end AND b.consolidated_invoice IS not null
 				GROUP BY a.mode_of_payment)
 				
-				, payment_entry AS(
 				SELECT 
-				a.mode_of_payment,
+				c.mode_of_payment,
 				SUM(allocated_amount) total_amount
-				FROM `tabPayment Entry` a
-				INNER JOIN `tabPayment Entry Reference` b ON b.parent = a.name
-				INNER JOIN `tabSales Invoice` c ON c.name = b.reference_name
-				WHERE a.posting_date BETWEEN '{0}' and '{1}' and c.company = '{2}'
-				and c.branch = case when '{3}' = 'None' then c.branch else '{3}' end
-				GROUP BY a.mode_of_payment
-				)
+				FROM `tabSales Invoice` a
+				INNER JOIN `tabPayment Entry Reference` b ON b.reference_name = a.name
+				INNER JOIN `tabPayment Entry` c ON c.name = b.parent
+				WHERE a.posting_date BETWEEN '{0}' and '{1}' and a.company = '{2}'
+				and a.branch = case when '{3}' = 'None' then a.branch else '{3}' end
+				GROUP BY c.mode_of_payment
 
 				,sale_invoice as(
 				SELECT 
