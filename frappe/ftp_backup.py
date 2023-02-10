@@ -4,9 +4,9 @@
 import ftplib, frappe
 import os, shutil
 import shlex, subprocess
-import time
 from frappe.model.document import Document
 from frappe.utils import cstr
+import asyncio
 
 @frappe.whitelist()
 def execute_backup_command():
@@ -28,25 +28,11 @@ def run_backup_command():
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-    run_bench_command("bench --site " + site_name + " backup --with-files")
+    asyncio.run(run_bench_command("bench --site " + site_name + " backup --with-files"))
+    
+    frappe.enqueue(upload_to_ftp,queue="long")
 
-    time.sleep(2)
-
-    session = ftplib.FTP_TLS(setting.ftp_url,setting.ftp_user,setting.ftp_password)
-    if site_name in session.nlst():
-        session.cwd(site_name)
-    else : 
-        session.mkd(site_name)
-        session.cwd(site_name)
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
-        file = open(file_path,'rb')
-        session.storbinary('STOR ' + filename, file)
-        file.close()
-    session.quit()
-    return "Backup Completed"
-
-def run_bench_command(command, kwargs=None):
+async def run_bench_command(command, kwargs=None):
     site = {"site": frappe.local.site}
     cmd_input = None
     if kwargs:
@@ -61,3 +47,22 @@ def run_bench_command(command, kwargs=None):
     command = " ".join(command.split()).format(**kwargs)
     command = shlex.split(command)
     subprocess.run(command, input=cmd_input, capture_output=True)
+
+@frappe.whitelist()
+def upload_to_ftp():
+    site_name = cstr(frappe.local.site)
+    folder = '/home/erpuser/pro-bench/sites/' + site_name + '/private/backups'
+    setting = frappe.get_doc('System Settings')
+    session = ftplib.FTP_TLS(setting.ftp_url,setting.ftp_user,setting.ftp_password)
+    if site_name in session.nlst():
+        session.cwd(site_name)
+    else : 
+        session.mkd(site_name)
+        session.cwd(site_name)
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        file = open(file_path,'rb')
+        session.storbinary('STOR ' + filename, file)
+        file.close()
+    session.quit()
+    return "Backup Completed"
