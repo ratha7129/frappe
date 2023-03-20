@@ -57,6 +57,14 @@ def upload_to_ftp():
     session.encoding = 'latin-1'
     if site_name in session.nlst():
         session.cwd(site_name)
+	for file in session.nlst():
+            new_str = file.split('_', 1)[0]
+            creation = f"{new_str[:4]}-{new_str[4:6]}-{new_str[6:]}"
+            if(len(creation) >= 10 ):
+                d1 = datetime.strptime(creation, "%Y-%m-%d")
+                d2 = datetime.today()
+                if (d2-d1).days >= setting.delete_after:
+                    session.delete(file)
     else : 
         session.mkd(site_name)
         session.cwd(site_name)
