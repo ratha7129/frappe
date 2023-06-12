@@ -302,7 +302,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	# total last column
 	item_code = ""
 	if filters.parent_row_group == None and filters.row_group == "Product" : is_group=1
-	if filters.row_group == "Product" or filters.parent_row_group == "Product":
+	if indent == 1 and (filters.row_group == "Product" or filters.parent_row_group == "Product"):
 		item_code = ",a.item_code"
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
