@@ -479,7 +479,7 @@ def get_row_groups():
 			"parent_row_group_filter_field":"row_group"
 		},
 		{
-			"fieldname":"concat(ifnull(b.customer,'Not Set'),'-',b.customer_name)",
+			"fieldname":"b.customer_name",
 			"label":"Customer",
 			"parent_row_group_filter_field":"row_group"
 		},
