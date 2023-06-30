@@ -300,10 +300,10 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 					sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',{},0)) as '{}_{}',".format(f["start_date"],f["end_date"],rf["sql_expression"],f["fieldname"],rf["fieldname"])
 			#end for
 	# total last column
-	item_code = ""
+	extra_group = ""
 	if filters.parent_row_group == None and filters.row_group == "Product" : is_group=1
-	if indent == 1 and (filters.row_group == "Product" or filters.parent_row_group == "Product"):
-		item_code = ",a.item_code"
+	if filters.row_group == "Product" or filters.parent_row_group == "Product":
+		extra_group = ",a.item_code"
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
 		sql = strip(sql)
@@ -322,7 +322,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			{0}
 		GROUP BY 
 		{1} {2}
-	""".format(get_conditions(filters,group_filter), row_group,item_code)
+	""".format(get_conditions(filters,group_filter), row_group,extra_group)
 	data = frappe.db.sql(sql,filters, as_dict=1)
 	return data
  
