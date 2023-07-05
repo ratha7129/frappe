@@ -94,7 +94,8 @@
   "delete_after",
   "column_break_88",
   "ftp_url",
-  "ftp_password"
+  "ftp_password",
+  "backup_type"
  ],
  "fields": [
   {
@@ -639,13 +640,19 @@
   {
    "fieldname": "column_break_88",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "backup_type",
+   "fieldtype": "Select",
+   "label": "Backup Type",
+   "options": "Simple\nFull"
   }
  ],
  "icon": "fa fa-cog",
  "image_field": "system_logo",
  "issingle": 1,
  "links": [],
- "modified": "2023-03-20 17:22:21.463231",
+ "modified": "2023-07-05 13:49:20.995160",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",
