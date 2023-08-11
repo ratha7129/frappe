@@ -33,6 +33,7 @@
   "allow_close_cashier_shift",
   "allow_open_cashdrawer",
   "allow_switch_pos_profile",
+  "allow_edit_tax",
   "column_break_24",
   "allow_change_item_price",
   "allow_change_price_list_rate",
@@ -830,6 +831,12 @@
   {
    "fieldname": "column_break_31",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_edit_tax",
+   "fieldtype": "Check",
+   "label": "Allow Edit Tax"
   }
  ],
  "icon": "fa fa-user",
