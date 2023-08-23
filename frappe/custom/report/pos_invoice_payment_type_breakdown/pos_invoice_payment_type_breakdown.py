@@ -51,7 +51,7 @@ def get_report_data(filters):
 				FROM `tabSales Invoice` a
 				INNER JOIN `tabPayment Entry Reference` b ON b.reference_name = a.name
 				INNER JOIN `tabPayment Entry` c ON c.name = b.parent
-				WHERE a.posting_date BETWEEN '{0}' and '{1}' and a.company = '{2}'
+				WHERE a.posting_date BETWEEN '{0}' and '{1}' and a.company = '{2}' and c.docstatus=1
 				and coalesce(a.branch,'None') = case when '{3}' = 'None' then coalesce(a.branch,'None') else '{3}' end
 				GROUP BY c.mode_of_payment
 				)
