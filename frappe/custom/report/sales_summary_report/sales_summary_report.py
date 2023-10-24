@@ -109,7 +109,9 @@ def get_columns(filters):
 	columns = []
 	columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
 	if filters.row_group == "Product":
-			columns.append({"label":"Item Code","fieldname":"item_code","fieldtype":"Data","align":"left",'width':130})
+		columns.append({"label":"Group Name","fieldname":"parent_item_group","fieldtype":"Data","align":"left",'width':130})
+		columns.append({"label":"Category Name","fieldname":"item_group","fieldtype":"Data","align":"left",'width':130})
+		columns.append({"label":"Item Code","fieldname":"item_code","fieldtype":"Data","align":"left",'width':130})
 	hide_columns = filters.get("hide_columns")
 	 
 	if filters.column_group !="None" and filters.row_group not in ["Date","Month","Year"]:
@@ -303,7 +305,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	extra_group = ""
 	if filters.parent_row_group == None and filters.row_group == "Product" : is_group=1
 	if filters.row_group == "Product" or filters.parent_row_group == "Product":
-		extra_group = ",a.item_code"
+		extra_group = ",a.item_code,a.item_group,a.parent_item_group"
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
 		sql = strip(sql)
