@@ -289,7 +289,16 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 
 	report_fields = get_report_field(filters)
 	
-	sql = "select {} as row_group, {} as indent ".format(row_group, indent)
+	sql = """
+	WITH item_transaction AS(
+		SELECT
+		item_code,
+		COUNT(DISTINCT(a.name)) transaction
+		FROM `tabPOS Invoice Item` a
+		INNER JOIN `tabPOS Invoice` b ON b.name = a.parent
+		WHERE STATUS='Consolidated' AND posting_date BETWEEN '{0}' AND '{1}'
+		GROUP BY item_code)
+	select {2} as row_group, {3} as indent """.format(filters.start_date,filters.end_date,row_group, indent)
 	if filters.column_group != "None":
 		fields = get_fields(filters)
 		for f in fields:
@@ -305,7 +314,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	extra_group = ""
 	if filters.parent_row_group == None and filters.row_group == "Product" : is_group=1
 	if filters.row_group == "Product" or filters.parent_row_group == "Product":
-		extra_group = ",a.item_code,a.item_group,a.parent_item_group"
+		extra_group = ",a.item_code,a.item_group,a.parent_item_group,c.transaction"
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
 		sql = strip(sql)
@@ -435,7 +444,7 @@ def get_report_field(filters):
 		]
 	elif(filters.parent_row_group is None and filters.row_group == "Product"):
 		return [
-			{"label":"Transaction","short_label":"Tran.", "fieldname":"transaction","fieldtype":"Float", "indicator":"Grey","precision":2, "align":"center","chart_color":"#f030fd","sql_expression":"coalesce((TotalItemTransaction(a.item_code,'{0}','{1}')))".format(filters.start_date,filters.end_date)},
+			{"label":"Transaction","short_label":"Tran.", "fieldname":"transaction","fieldtype":"Float", "indicator":"Grey","precision":2, "align":"center","chart_color":"#f030fd","sql_expression":"coalesce(c.transaction,0)"},
 			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"SUM(a.qty*a.conversion_factor)"},
 			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"SUM(a.rate*a.qty+a.discount_amount*a.qty)"},
 			{"label":"Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"SUM(coalesce(a.discount_amount,0)*a.qty)"},
