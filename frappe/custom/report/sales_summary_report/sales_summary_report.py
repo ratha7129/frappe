@@ -291,7 +291,10 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	
 	sql = """
 	WITH item_transaction AS(
-		SELECT
+		SELECT 
+		item_code,
+		COUNT(TRANSACTION)
+		FROM (SELECT
 		item_code,
 		COUNT(DISTINCT(a.name)) transaction
 		FROM `tabPOS Invoice Item` a
@@ -305,6 +308,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 		FROM `tabSales Invoice Item` a
 		INNER JOIN `tabSales Invoice` b ON b.name = a.parent
 		WHERE pos_profile is null AND posting_date BETWEEN '{0}' AND '{1}'
+		GROUP BY item_code)a
 		GROUP BY item_code)
 	select {2} as row_group, {3} as indent """.format(filters.start_date,filters.end_date,row_group, indent)
 	if filters.column_group != "None":
