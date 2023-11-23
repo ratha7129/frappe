@@ -282,35 +282,35 @@ def get_conditions(filters,group_filter=None):
 	return conditions
 
 def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
+	sql = ""
 	hide_columns = filters.get("hide_columns")
 	row_group = [d["fieldname"] for d in get_row_groups() if d["label"]==filters.row_group][0]
 	if(parent_row_group!=None):
 		row_group = [d["fieldname"] for d in get_row_groups() if d["label"]==parent_row_group][0]
-
 	report_fields = get_report_field(filters)
-	
-	sql = """
-	WITH item_transaction AS(
-		SELECT 
-		item_code,
-		COUNT(TRANSACTION) TRANSACTION
-		FROM (SELECT
-		item_code,
-		COUNT(DISTINCT(a.name)) transaction
-		FROM `tabPOS Invoice Item` a
-		INNER JOIN `tabPOS Invoice` b ON b.name = a.parent
-		WHERE STATUS='Consolidated' AND posting_date BETWEEN '{0}' AND '{1}'
-		GROUP BY item_code
-		union all
-		SELECT
-		item_code,
-		COUNT(DISTINCT(a.name)) transaction
-		FROM `tabSales Invoice Item` a
-		INNER JOIN `tabSales Invoice` b ON b.name = a.parent
-		WHERE pos_profile is null AND posting_date BETWEEN '{0}' AND '{1}'
-		GROUP BY item_code)a
-		GROUP BY item_code)
-	select {2} as row_group, {3} as indent """.format(filters.start_date,filters.end_date,row_group, indent)
+	if(filters.parent_row_group is None and filters.row_group == "Product"):
+		sql = """
+		WITH item_transaction AS(
+			SELECT 
+			item_code,
+			COUNT(TRANSACTION) TRANSACTION
+			FROM (SELECT
+			item_code,
+			COUNT(DISTINCT(a.name)) transaction
+			FROM `tabPOS Invoice Item` a
+			INNER JOIN `tabPOS Invoice` b ON b.name = a.parent
+			WHERE STATUS='Consolidated' AND posting_date BETWEEN '{0}' AND '{1}'
+			GROUP BY item_code
+			union all
+			SELECT
+			item_code,
+			COUNT(DISTINCT(a.name)) transaction
+			FROM `tabSales Invoice Item` a
+			INNER JOIN `tabSales Invoice` b ON b.name = a.parent
+			WHERE pos_profile is null AND posting_date BETWEEN '{0}' AND '{1}'
+			GROUP BY item_code)a
+			GROUP BY item_code)""".format(filters.start_date,filters.end_date)
+	sql = sql + """ select {0} as row_group, {1} as indent """.format(row_group, indent)
 	if filters.column_group != "None":
 		fields = get_fields(filters)
 		for f in fields:
@@ -330,6 +330,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
 		sql = strip(sql)
+		
 		if sql[-1]==",":
 			sql = sql[0:len(sql)-1]
 			 
