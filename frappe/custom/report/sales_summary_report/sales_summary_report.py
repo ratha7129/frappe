@@ -336,6 +336,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	sql = sql + """ {2}
 		FROM `tabSales Invoice Item` AS a
 			INNER JOIN `tabSales Invoice` b on b.name = a.parent
+			inner join item_transaction c on c.item_code = a.item_code
 		WHERE
 			b.docstatus in (1) AND
 			{0}
@@ -452,7 +453,7 @@ def get_report_field(filters):
 		]
 	elif(filters.parent_row_group is None and filters.row_group == "Product"):
 		return [
-			{"label":"Transaction","short_label":"Tran.", "fieldname":"transaction","fieldtype":"Float", "indicator":"Grey","precision":2, "align":"center","chart_color":"#f030fd","sql_expression":"SUM(a.total_transaction)"},
+			{"label":"Transaction","short_label":"Tran.", "fieldname":"transaction","fieldtype":"Float", "indicator":"Grey","precision":2, "align":"center","chart_color":"#f030fd","sql_expression":"coalesce(c.transaction,0)"},
 			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"SUM(a.qty*a.conversion_factor)"},
 			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"SUM(a.rate*a.qty+a.discount_amount*a.qty)"},
 			{"label":"Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"SUM(coalesce(a.discount_amount,0)*a.qty)"},
