@@ -332,17 +332,27 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 		if not hide_columns or  rf["label"] not in hide_columns:
 			sql = sql + " ,{} AS 'total_{}' ".format(rf["sql_expression"],rf["fieldname"])
 
-	
-	sql = sql + """ {2}
-		FROM `tabSales Invoice Item` AS a
-			INNER JOIN `tabSales Invoice` b on b.name = a.parent
-			left join item_transaction c on c.item_code = a.item_code
-		WHERE
-			b.docstatus in (1) AND
-			{0}
-		GROUP BY 
-		{1} {2}
-	""".format(get_conditions(filters,group_filter), row_group,extra_group)
+	if(filters.parent_row_group is None and filters.row_group == "Product"):
+		sql = sql + """ {2}
+			FROM `tabSales Invoice Item` AS a
+				INNER JOIN `tabSales Invoice` b on b.name = a.parent
+				left join item_transaction c on c.item_code = a.item_code
+			WHERE
+				b.docstatus in (1) AND
+				{0}
+			GROUP BY 
+			{1} {2}
+		""".format(get_conditions(filters,group_filter), row_group,extra_group)
+	else:
+		sql = sql + """ {2}
+			FROM `tabSales Invoice Item` AS a
+				INNER JOIN `tabSales Invoice` b on b.name = a.parent
+			WHERE
+				b.docstatus in (1) AND
+				{0}
+			GROUP BY 
+			{1} {2}
+		""".format(get_conditions(filters,group_filter), row_group,extra_group)
 	data = frappe.db.sql(sql,filters, as_dict=1)
 	return data
  
