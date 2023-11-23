@@ -18,8 +18,6 @@ def execute(filters=None):
 	
  
 	validate(filters)
-	#run this to update parent_item_group in table sales invoice item
-	update_parent_item_group()
 	update_sale()
 	
 	
@@ -59,26 +57,7 @@ def validate(filters):
 		if(filters.row_group == filters.parent_row_group):
 			frappe.throw("Parent row group and row group can not be the same")
 
-
-def update_parent_item_group():
-	frappe.db.sql(
-		"""
-			UPDATE `tabSales Invoice Item` a 
-			SET parent_item_group = (
-					SELECT parent_item_group FROM `tabItem Group` WHERE NAME=a.item_group) 
-			WHERE ifnull(parent_item_group,'') = ''
-		"""
-	)
-
 def update_sale():
-	frappe.db.sql(
-		"""
-			UPDATE `tabSales Invoice Item` a 
-			SET parent_item_group = (
-					SELECT parent_item_group FROM `tabItem Group` WHERE NAME=a.item_group) 
-			WHERE ifnull(parent_item_group,'') = ''
-		"""
-	)
 
 	#update transaction to tbl sale invoice item
 	sale_invoices = frappe.db.sql("select distinct parent from `tabSales Invoice Item` where total_transaction=0", as_dict=1)
@@ -101,8 +80,7 @@ def update_sale():
 				frappe.db.sql(sql)
 	
 	frappe.db.commit()
-	#end update total transaction to sale invoice item
-	# 				
+	#end update total transaction to sale invoice item		
 
 def get_columns(filters):
 	
