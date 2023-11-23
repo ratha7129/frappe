@@ -297,6 +297,14 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 		FROM `tabPOS Invoice Item` a
 		INNER JOIN `tabPOS Invoice` b ON b.name = a.parent
 		WHERE STATUS='Consolidated' AND posting_date BETWEEN '{0}' AND '{1}'
+		GROUP BY item_code
+		union all
+		SELECT
+		item_code,
+		COUNT(DISTINCT(a.name)) transaction
+		FROM `tabSales Invoice Item` a
+		INNER JOIN `tabSales Invoice` b ON b.name = a.parent
+		WHERE pos_profile is null AND posting_date BETWEEN '{0}' AND '{1}'
 		GROUP BY item_code)
 	select {2} as row_group, {3} as indent """.format(filters.start_date,filters.end_date,row_group, indent)
 	if filters.column_group != "None":
@@ -445,7 +453,7 @@ def get_report_field(filters):
 		]
 	elif(filters.parent_row_group is None and filters.row_group == "Product"):
 		return [
-			{"label":"Transaction","short_label":"Tran.", "fieldname":"transaction","fieldtype":"Float", "indicator":"Grey","precision":2, "align":"center","chart_color":"#f030fd","sql_expression":"coalesce(c.transaction,count(a.id))"},
+			{"label":"Transaction","short_label":"Tran.", "fieldname":"transaction","fieldtype":"Float", "indicator":"Grey","precision":2, "align":"center","chart_color":"#f030fd","sql_expression":"coalesce(c.transaction,0)"},
 			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"SUM(a.qty*a.conversion_factor)"},
 			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"SUM(a.rate*a.qty+a.discount_amount*a.qty)"},
 			{"label":"Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"SUM(coalesce(a.discount_amount,0)*a.qty)"},
