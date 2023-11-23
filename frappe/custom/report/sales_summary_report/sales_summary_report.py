@@ -293,7 +293,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	WITH item_transaction AS(
 		SELECT 
 		item_code,
-		COUNT(TRANSACTION)
+		COUNT(TRANSACTION) TRANSACTION
 		FROM (SELECT
 		item_code,
 		COUNT(DISTINCT(a.name)) transaction
