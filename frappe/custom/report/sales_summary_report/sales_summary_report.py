@@ -302,7 +302,6 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			#end for
 	# total last column
 	extra_group = ""
-	if filters.parent_row_group == None and filters.row_group == "Product" : is_group=1
 	if filters.row_group == "Product" or filters.parent_row_group == "Product":
 		extra_group = ",a.item_code,a.item_group,a.parent_item_group,c.transaction"
 	for rf in report_fields:
