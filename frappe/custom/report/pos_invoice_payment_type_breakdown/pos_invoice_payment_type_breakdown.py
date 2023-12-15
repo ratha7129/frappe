@@ -4,17 +4,34 @@
 import frappe
 
 def execute(filters=None):
-	return get_columns(filters),get_report_data(filters)
+	data = get_raw_data(filters)
+	return get_columns(filters,data),get_report_data(filters,data)
 
 
-def get_columns(filters):
+def get_columns(filters,data):
 	columns = []
 	columns.append({'fieldname':'posting_date','label':"Date",'fieldtype':'Date','align':'center','width':150})
-	columns.append({'fieldname':'mode_of_payment','label':"Payment Type",'fieldtype':'Data','align':'center','width':150})
-	columns.append({'fieldname':'payment_amount','label':"Payment Amount",'fieldtype':'Currency','align':'right','width':150})
+	payment_types =set( [d["mode_of_payment"] for d in data])
+	for pt in payment_types:
+		columns.append({'fieldname':pt.lower().replace(" ","_"),'label':pt,'fieldtype':'Float','align':'center','width':150})
+	columns.append({'fieldname':'total_payment','label':"Total Payment",'fieldtype':'Currency','align':'right','width':150})
 	return columns
 
-def get_report_data(filters):
+def get_report_data(filters,data):
+	payment_types = set( [d["mode_of_payment"].lower().replace(" ","_") for d in data])
+	dates = set( [d["posting_date"] for d in data])
+	report_data = []
+	for d in dates:
+		record = {"posting_date":d}
+		for pt in payment_types:
+			pt_data = [x for x in data if x["posting_date"] ==d and x["mode_of_payment"].lower().replace(" ","_") == pt]
+			if len(pt_data)>0:
+				record[pt] = pt_data[0]["payment_amount"]
+		record["total_payment"] = pt_data = sum([x["payment_amount"] for x in data if x["posting_date"] ==d])
+		report_data.append(record)
+	return report_data
+
+def get_raw_data(filters):
 	sql = """
 				WITH pos_opening_entry_id AS( 
 				SELECT 
