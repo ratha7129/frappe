@@ -26,8 +26,8 @@ def get_report_data(filters,data):
 		for pt in payment_types:
 			pt_data = [x for x in data if x["posting_date"] ==d and x["mode_of_payment"].lower().replace(" ","_") == pt]
 			if len(pt_data)>0:
-				record[pt] = pt_data[0]["payment_amount"]
-		record["total_payment"] = pt_data = sum([x["payment_amount"] for x in data if x["posting_date"] ==d])
+				record[pt] = pt_data[0]["payment_amount"] or 0
+		record["total_payment"] = pt_data = sum([(x["payment_amount"] or 0) for x in data if x["posting_date"] ==d])
 		report_data.append(record)
 	return report_data
 
