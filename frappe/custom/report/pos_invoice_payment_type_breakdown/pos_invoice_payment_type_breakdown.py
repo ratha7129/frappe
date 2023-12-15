@@ -116,6 +116,7 @@ def get_raw_data(filters):
 				FROM payment a
 				LEFT JOIN change_amount b ON b.mode_of_payment = a.mode_of_payment AND b.posting_date = a.posting_date
 				where a.mode_of_payment is not null
+				order by a.posting_date
 				""".format(filters.start_date,filters.end_date,filters.company,filters.branch)
 	data = frappe.db.sql(sql,as_dict=1)
 	return data
