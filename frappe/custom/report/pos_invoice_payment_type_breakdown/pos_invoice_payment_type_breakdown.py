@@ -31,6 +31,7 @@ def get_report_data(filters,data):
 				record[pt] = 0
 		record["total_payment"] = pt_data = sum([(x["payment_amount"] or 0) for x in data if x["posting_date"] ==d])
 		report_data.append(record)
+	report_data = sorted(report_data, key=lambda k: k.get('posting_date', 0))
 	return report_data
 
 def get_raw_data(filters):
