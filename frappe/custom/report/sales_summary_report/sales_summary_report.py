@@ -298,7 +298,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			
 			for rf in report_fields:
 				if not hide_columns or  rf["label"] not in hide_columns:
-					sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',{},0)) as '{}_{}',".format(f["start_date"],f["end_date"],rf["sql_expression"],f["fieldname"],rf["fieldname"])
+					sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',{},0)) as '{}_{}',".format(f["start_date"],f["end_date"],rf["sql_expression"].replace('sum',''),f["fieldname"],rf["fieldname"])
 			#end for
 	# total last column
 	extra_group = ""
