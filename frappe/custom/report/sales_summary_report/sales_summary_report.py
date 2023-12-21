@@ -319,6 +319,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			FROM `tabSales Invoice Item` AS a
 				INNER JOIN `tabSales Invoice` b on b.name = a.parent
 				left join item_transaction c on c.item_code = a.item_code
+				left join `tabItem` d ON d.item_code = a.item_code
 			WHERE
 				b.docstatus in (1) AND
 				{0}
@@ -329,6 +330,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 		sql = sql + """ {2}
 			FROM `tabSales Invoice Item` AS a
 				INNER JOIN `tabSales Invoice` b on b.name = a.parent
+				left join `tabItem` d ON d.item_code = a.item_code
 			WHERE
 				b.docstatus in (1) AND
 				{0}
@@ -437,10 +439,10 @@ def get_report_field(filters):
 			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"sum(a.qty*a.conversion_factor)"},
 			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(a.base_price_list_rate * a.qty)"},
 			{"label":"Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(a.base_price_list_rate*a.qty-a.net_amount)"},
-			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"sum(a.qty*(SELECT sum(d.valuation_rate) FROM `tabItem` d WHERE d.item_code = a.item_code)*a.conversion_factor)"},
+			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"sum(a.qty*d.valuation_rate*a.conversion_factor)"},
 			{"label":"Tax and Charge", "short_label":"Comm.", "fieldname":"tax_and_charge","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"sum(coalesce(a.item_tax,0))"},		
 			{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"sum(a.net_amount)"},
-			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"sum(a.net_amount + coalesce(a.item_tax,0) - (a.qty*(SELECT sum(d.valuation_rate) FROM `tabItem` d WHERE d.item_code = a.item_code)*a.conversion_factor))"}
+			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"sum(a.net_amount + coalesce(a.item_tax,0) - (a.qty*d.valuation_rate*a.conversion_factor))"}
 		]
 	elif(filters.parent_row_group is None and filters.row_group == "Product"):
 		return [
@@ -448,10 +450,10 @@ def get_report_field(filters):
 			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"sum(a.qty*a.conversion_factor)"},
 			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(a.base_price_list_rate * a.qty)"},
 			{"label":"Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(a.base_price_list_rate*a.qty-a.net_amount)"},
-			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"sum(a.qty*(SELECT sum(d.valuation_rate) FROM `tabItem` d WHERE d.item_code = a.item_code)*a.conversion_factor)"},
+			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"sum(a.qty*d.valuation_rate*a.conversion_factor)"},
 			{"label":"Tax and Charge", "short_label":"Comm.", "fieldname":"tax_and_charge","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"sum(coalesce(a.item_tax,0))"},		
 			{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"sum(a.net_amount)"},
-			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"sum(a.net_amount + coalesce(a.item_tax,0) - (a.qty*(SELECT sum(d.valuation_rate) FROM `tabItem` d WHERE d.item_code = a.item_code)*a.conversion_factor))"}
+			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"sum(a.net_amount + coalesce(a.item_tax,0) - (a.qty*d.valuation_rate*a.conversion_factor))"}
 		]
 	else:
 		return [
@@ -459,10 +461,10 @@ def get_report_field(filters):
 			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"sum(a.qty*a.conversion_factor)"},
 			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(a.base_price_list_rate * a.qty)"},
 			{"label":"Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(a.base_price_list_rate*a.qty-a.net_amount)"},
-			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"sum(a.qty*(SELECT sum(d.valuation_rate) FROM `tabItem` d WHERE d.item_code = a.item_code)*a.conversion_factor)"},
+			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"sum(a.qty*d.valuation_rate*a.conversion_factor)"},
 			{"label":"Tax and Charge", "short_label":"Comm.", "fieldname":"tax_and_charge","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"sum(coalesce(a.item_tax,0))"},		
 			{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"sum(a.net_amount)"},
-			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"sum(a.net_amount + coalesce(a.item_tax,0) - (a.qty*(SELECT sum(d.valuation_rate) FROM `tabItem` d WHERE d.item_code = a.item_code)*a.conversion_factor))"}
+			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"sum(a.net_amount + coalesce(a.item_tax,0) - (a.qty*d.valuation_rate*a.conversion_factor))"}
 		]
 
 def get_row_groups():
