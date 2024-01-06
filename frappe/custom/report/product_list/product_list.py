@@ -14,6 +14,8 @@ def get_columns(filters):
 	columns.append({'fieldname':'supplier','label':"Supplier",'fieldtype':'Data','align':'left','width':150	})
 	columns.append({'fieldname':'item_code','label':"Barcode",'fieldtype':'Data','align':'left','width':150})
 	columns.append({'fieldname':'item_name','label':"Description",'fieldtype':'Data','align':'left','width':400})
+	columns.append({'fieldname':'min_quantity','label':"Min. QTY",'fieldtype':'Data','align':'center','width':70})
+	columns.append({'fieldname':'max_quantity','label':"Max. QTY",'fieldtype':'Data','align':'center','width':70})
 	columns.append({'fieldname':'actual_qty','label':"QTY",'fieldtype':'Data','align':'center','width':70})
 	columns.append({'fieldname':'cost','label':"Cost",'fieldtype':'Currency','align':'left','width':90})
 	columns.append({'fieldname':'price','label':"R.Price",'fieldtype':'Currency','align':'left','width':90})
@@ -39,7 +41,9 @@ def get_report_data(filters):
 		coalesce((SELECT price_list_rate FROM `tabItem Price` c WHERE item_code = a.item_code AND c.uom = a.stock_uom AND price_list = 'Standard Selling' LIMIT 1),0) price,
 		coalesce((SELECT price_list_rate FROM `tabItem Price` d WHERE item_code = a.item_code AND d.uom = a.stock_uom AND price_list = 'Wholesale Price' LIMIT 1),0) whole_sale,
 		coalesce((SELECT price_list_rate FROM `tabItem Price` e WHERE item_code = a.item_code AND e.uom = a.stock_uom AND price_list = 'Standard Buying' LIMIT 1),0) cost,
-		a.allow_discount
+		a.allow_discount,
+		a.max_quantity,
+		a.min_quantity
 	FROM `tabItem` a WHERE a.allow_discount = if('{2}'='All',a.allow_discount,if('{2}'='Yes',1,0)) {1} {3}
 	""".format(warehouse, item_group,filters.allow_discount,supplier)
 	data = frappe.db.sql(sql,as_dict=1)
