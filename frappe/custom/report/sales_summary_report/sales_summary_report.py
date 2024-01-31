@@ -266,7 +266,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	if(parent_row_group!=None):
 		row_group = [d["fieldname"] for d in get_row_groups() if d["label"]==parent_row_group][0]
 	report_fields = get_report_field(filters)
-	if(filters.parent_row_group == "product" or filters.row_group == "Product"):
+	if(filters.parent_row_group is None and filters.row_group == "Product"):
 		sql = """
 		WITH item_transaction AS(
 			SELECT 
@@ -302,7 +302,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			#end for
 	# total last column
 	extra_group = ""
-	if filters.row_group == "Product" or filters.parent_row_group == "Product":
+	if filters.row_group == "Product" and filters.parent_row_group is None:
 		extra_group = ",a.item_code,a.item_group,a.parent_item_group,c.transaction"
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
@@ -314,7 +314,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 		if not hide_columns or  rf["label"] not in hide_columns:
 			sql = sql + " ,{} AS 'total_{}' ".format(rf["sql_expression"],rf["fieldname"])
 
-	if(filters.parent_row_group == "Product" or filters.row_group == "Product"):
+	if(filters.parent_row_group is None and filters.row_group == "Product"):
 		sql = sql + """ {2}
 			FROM `tabSales Invoice Item` AS a
 				INNER JOIN `tabSales Invoice` b on b.name = a.parent
