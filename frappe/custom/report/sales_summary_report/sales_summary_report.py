@@ -314,7 +314,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 		if not hide_columns or  rf["label"] not in hide_columns:
 			sql = sql + " ,{} AS 'total_{}' ".format(rf["sql_expression"],rf["fieldname"])
 
-	if(filters.parent_row_group is None and filters.row_group == "Product"):
+	if(filters.parent_row_group == "Product" or filters.row_group == "Product"):
 		sql = sql + """ {2}
 			FROM `tabSales Invoice Item` AS a
 				INNER JOIN `tabSales Invoice` b on b.name = a.parent
