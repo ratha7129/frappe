@@ -14,9 +14,9 @@ def get_columns():
 	columns.append({'fieldname':'item_name','label':"Item Name",'fieldtype':'Data','options':'Sales Invoice','align':'left','width':250})
 	columns.append({'fieldname':'parent_item_group','label':"Item Group",'fieldtype':'Data','options':'Sales Invoice','align':'left','width':250})
 	columns.append({'fieldname':'item_group','label':"Item Category",'fieldtype':'Data','options':'Sales Invoice','align':'left','width':250})
-	columns.append({'fieldname':'TRANSACTION','label':"Transaction",'fieldtype':'Data','options':'Sales Invoice','align':'left','width':100})
-	columns.append({'fieldname':'month','label':"Month",'fieldtype':'Data','options':'Sales Invoice','align':'left','width':100})
-	columns.append({'fieldname':'qty','label':"QTY",'fieldtype':'Currency','options':'Sales Invoice','align':'center','width':100})
+	columns.append({'fieldname':'TRANSACTION','label':"Transaction",'fieldtype':'Data','options':'Sales Invoice','align':'center','width':100})
+	columns.append({'fieldname':'month','label':"Month",'fieldtype':'Data','options':'Sales Invoice','align':'center','width':100})
+	columns.append({'fieldname':'qty','label':"QTY",'fieldtype':'Data','options':'Sales Invoice','align':'center','width':100})
 	columns.append({'fieldname':'sub_total','label':"Sub Total",'fieldtype':'Currency','options':'Sales Invoice','align':'right','width':100})
 	columns.append({'fieldname':'cost','label':"Cost",'fieldtype':'Currency','options':'Sales Invoice','align':'right','width':100})
 	columns.append({'fieldname':'tax','label':"Tax",'fieldtype':'Currency','options':'Sales Invoice','align':'right','width':100})
@@ -73,7 +73,8 @@ def get_data(filters):
 			a.item_group,
 			coalesce(c.transaction,0),
 			date_format(b.posting_date,'%%Y/%%m')
-			ORDER BY a.item_code,
+			ORDER BY 
+			a.item_code,
 			a.item_name""".format(get_conditions(filters),filters.start_date,filters.end_date)
 	data = frappe.db.sql(sql,filters, as_dict=1)
 	return data
