@@ -266,7 +266,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	if(parent_row_group!=None):
 		row_group = [d["fieldname"] for d in get_row_groups() if d["label"]==parent_row_group][0]
 	report_fields = get_report_field(filters)
-	if(filters.parent_row_group is None and filters.row_group == "Product"):
+	if(filters.parent_row_group == "product" or filters.row_group == "Product"):
 		sql = """
 		WITH item_transaction AS(
 			SELECT 
