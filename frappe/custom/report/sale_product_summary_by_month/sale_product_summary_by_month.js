@@ -7,7 +7,19 @@ frappe.query_reports["Sale Product Summary By Month"] = {
 		report.page.add_inner_button ("Preview Report", function () {
 			frappe.query_report.refresh();
 		});
-		
+		report.page.add_inner_button ("Export Sheet", function () {
+			frappe.call({
+				method:
+					"frappe.upload_to_googlesheet.upload_to_google_sheet",
+				args: {
+					start_date: frappe.query_report.get_filter_value("start_date"),
+					end_date: frappe.query_report.get_filter_value("end_date"),
+				},
+				callback: (response) => {
+					
+				},
+			});
+		});
 	},
 	"filters": [
 		{

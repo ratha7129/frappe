@@ -95,7 +95,9 @@
   "column_break_88",
   "ftp_url",
   "ftp_password",
-  "backup_type"
+  "backup_type",
+  "section_break_94",
+  "google_account_credentials"
  ],
  "fields": [
   {
@@ -646,6 +648,17 @@
    "fieldtype": "Select",
    "label": "Backup Type",
    "options": "Simple\nFull"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_94",
+   "fieldtype": "Section Break",
+   "label": "Google Account Credentials"
+  },
+  {
+   "fieldname": "google_account_credentials",
+   "fieldtype": "Code",
+   "label": "Google Account Credentials"
   }
  ],
  "icon": "fa fa-cog",
