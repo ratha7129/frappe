@@ -1,5 +1,4 @@
 import gspread
-from frappe.utils import format_datetime
 import json
 from oauth2client.service_account import ServiceAccountCredentials
 from frappe.desk.query_report import run
@@ -25,7 +24,7 @@ def upload_to_google_sheet(start_date,end_date):
 def convert_to_nested_arrays(json_data,columns):
     if(len(json_data) > 0):
         keys = [{"fieldname": item["fieldname"], "fieldtype": item["fieldtype"]} for item in columns]
-        result = [[ format_datetime(entry[key['fieldname']],"dd-MM-yyyy hh:mm:ss a") if key['fieldtype'] == "Datetime" else entry[key['fieldname']] for key in keys] for entry in json_data]
+        result = [[ entry[key['fieldname']] for key in keys] for entry in json_data]
         return result
     else:
          return []
