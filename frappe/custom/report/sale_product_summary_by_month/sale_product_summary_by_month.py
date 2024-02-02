@@ -76,7 +76,7 @@ def get_data(filters):
 			ORDER BY 
 			a.item_code,
 			a.item_name""".format(get_conditions(filters),filters.start_date,filters.end_date)
-	data = frappe.db.sql(sql,filters, as_dict=1)
+	data = frappe.db.sql(sql,filters, as_dict=0)
 	return data
 
 def get_conditions(filters):
