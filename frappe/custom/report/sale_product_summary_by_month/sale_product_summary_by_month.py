@@ -75,7 +75,7 @@ def get_data(filters):
 			date_format(b.posting_date,'%%Y/%%m')
 			ORDER BY 
 			a.item_code,
-			a.item_name""".format(get_conditions(filters),filters.start_date,filters.end_date)
+			a.item_name""".format(get_conditions(filters),filters["start_date"],filters["end_date"])
 	data = frappe.db.sql(sql,filters, as_dict=0)
 	return data
 
