@@ -144,19 +144,14 @@ frappe.query_reports["Sales Summary Report"] = {
 			on_change: function (query_report) {},
 			get_data: function(txt) {
 				return [
-					{"value":"Amount","description":"Amount"},
-					{"value":"Transaction","description":"Transaction"},
-					{"value":"Quantity","description":"Quantity"},
-					{"value":"Sub Total","description":"Sub Total"},
-					{"value":"Cost","description":"Cost"},
-					{"value":"Profit","description":"Profit"},
-					{"value":"Total Discount","description":"Total Discount"},
-					{"value":"Total Transaction","description":"Total Transaction"},
-					{"value":"Total Sub Total","description":"Total Sub Total"},
-					{"value":"Total Cost","description":"Total Cost"},
-					{"value":"Total Tax and Charge","description":"Total Tax and Charge"},
-					{"value":"Total Amount","description":"Total Amount"},
-					{"value":"Total Profit","description":"Total Profit"},
+					{"value":"Amount","description":"Total Amount"},
+					{"value":"Transaction","description":"Total Transaction"},
+					{"value":"Quantity","description":"Total Quantity"},
+					{"value":"Sub Total","description":"Total Sub Total"},
+					{"value":"Cost","description":"Total Cost"},
+					{"value":"Profit","description":"Total Profit"},
+					{"value":"Discount","description":"Total Discount"},
+					{"value":"Tax and Charge","description":"Total Tax and Charge"},
 				]
 			},
 			"default":"All"
