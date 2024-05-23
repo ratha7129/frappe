@@ -49,7 +49,7 @@ def get_report_data(filters):
 		a.max_quantity,
 		a.min_quantity
 	FROM `tabItem` a 
-	inner join `tabItem Group` where b.name = a.item_group
+	inner join `tabItem Group` b on b.name = a.item_group
 	WHERE a.allow_discount = if('{2}'='All',a.allow_discount,if('{2}'='Yes',1,0)) {1} {4} {3}
 	""".format(warehouse, item_group,filters.allow_discount,supplier,parent_item_group)
 	data = frappe.db.sql(sql,as_dict=1)
