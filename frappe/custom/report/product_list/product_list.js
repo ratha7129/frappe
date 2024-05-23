@@ -34,7 +34,8 @@ frappe.query_reports["Product List"] = {
 			fieldtype: "MultiSelectList",
 			on_change: function (query_report) {},
 			get_data: function(txt) {
-				return frappe.db.get_link_options('Item Group', txt,{"is_group":0});
+				parent = frappe.query_report.get_filter_value("parent_item_group");
+				return frappe.db.get_link_options('Item Group', txt,filters={"is_group":0,"parent_item_group":["in",parent]});
 			}
 		},
 		{
