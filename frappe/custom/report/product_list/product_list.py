@@ -9,6 +9,7 @@ def execute(filters=None):
 
 def get_columns(filters):
 	columns = []
+	columns.append({'fieldname':'parent_item_group','label':"Parent Item Group",'fieldtype':'Data','align':'left','width':150})
 	columns.append({'fieldname':'item_group','label':"Item Group",'fieldtype':'Data','align':'left','width':150})
 	columns.append({'fieldname':'available_branch','label':"Available Branch",'fieldtype':'Data','align':'left','width':180	})
 	columns.append({'fieldname':'supplier','label':"Supplier",'fieldtype':'Data','align':'left','width':150	})
@@ -26,12 +27,15 @@ def get_report_data(filters):
 	warehouse = ""
 	item_group = ""
 	supplier = ""
+	parent_item_group = ""
 	if filters.get("warehouse"): warehouse = " and f.warehouse in (" + get_list(filters,"warehouse") + ")"
+	if filters.get("parent_item_group"): parent_item_group = " and b.parent_item_group in (" + get_list(filters,"parent_item_group") + ")"
 	if filters.get("item_group"): item_group = " and a.item_group in (" + get_list(filters,"item_group") + ")"
 	if filters.get("supplier"): supplier = " and a.supplier in (" + get_list(filters,"supplier") + ")"
 	sql = """
 	SELECT 
 		a.item_group,
+		b.parent_item_group,
 		a.item_code,
 		a.item_name,
 		a.stock_uom,
@@ -44,8 +48,10 @@ def get_report_data(filters):
 		a.allow_discount,
 		a.max_quantity,
 		a.min_quantity
-	FROM `tabItem` a WHERE a.allow_discount = if('{2}'='All',a.allow_discount,if('{2}'='Yes',1,0)) {1} {3}
-	""".format(warehouse, item_group,filters.allow_discount,supplier)
+	FROM `tabItem` a 
+	inner join `tabItem Group` where b.name = a.item_group
+	WHERE a.allow_discount = if('{2}'='All',a.allow_discount,if('{2}'='Yes',1,0)) {1} {4} {3}
+	""".format(warehouse, item_group,filters.allow_discount,supplier,parent_item_group)
 	data = frappe.db.sql(sql,as_dict=1)
 	return data
 

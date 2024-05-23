@@ -13,6 +13,14 @@ frappe.query_reports["Product List"] = {
 			}
 		},
 		{
+			fieldname: "parent_item_group",
+			label: "Parent Item Group",
+			fieldtype: "MultiSelectList",
+			get_data: function(txt) {
+				return frappe.db.get_link_options('Item Group', txt,{"is_group":1});
+			}
+		},
+		{
 			fieldname: "item_group",
 			label: "Item Group",
 			fieldtype: "MultiSelectList",
