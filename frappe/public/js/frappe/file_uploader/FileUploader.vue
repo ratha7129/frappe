@@ -36,7 +36,7 @@
 						ref="file_input"
 						@change="on_file_input"
 						:multiple="allow_multiple"
-						:accept="(restrictions.allowed_file_types || []).join(', ')"
+						:accept="restrictions.accepted_file"
 					>
 					<button class="btn btn-file-upload" v-if="!disable_file_browser" @click="show_file_browser = true">
 						<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -209,6 +209,7 @@ export default {
 		}
 	},
 	created() {
+		frappe.call('frappe.core.api.file.get_accepted_file').then(res => {this.restrictions.accepted_file = String(res.message);});
 		this.allow_take_photo = window.navigator.mediaDevices;
 		if (frappe.user_id !== "Guest") {
 			frappe.call({

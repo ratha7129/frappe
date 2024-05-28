@@ -88,6 +88,9 @@ def get_files_by_search_text(text: str) -> list[dict]:
 def get_max_file_size() -> int:
 	return cint(frappe.conf.get("max_file_size")) or 10485760
 
+@frappe.whitelist(allow_guest=True)
+def get_accepted_file() -> int:
+	return str(frappe.conf.get("accepted_file")) or ""
 
 @frappe.whitelist()
 def create_new_folder(file_name: str, folder: str) -> File:
