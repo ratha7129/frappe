@@ -14,6 +14,10 @@ frappe.query_reports["Sale Product Summary By Month"] = {
 				args: {
 					start_date: frappe.query_report.get_filter_value("start_date"),
 					end_date: frappe.query_report.get_filter_value("end_date"),
+					branch: frappe.query_report.get_filter_value("branch"),
+					pos_profile: frappe.query_report.get_filter_value("pos_profile"),
+					item_group: frappe.query_report.get_filter_value("item_group"),
+					item_category: frappe.query_report.get_filter_value("item_category"),
 				},
 				callback: (response) => {
 					
@@ -43,6 +47,15 @@ frappe.query_reports["Sale Product Summary By Month"] = {
 			on_change: function (query_report) {},
 			get_data: function(txt) {
 				return frappe.db.get_link_options('Branch', txt);
+			}
+		},
+		{
+			fieldname: "pos_profile",
+			label: "POS Profile",
+			"fieldtype": "MultiSelectList",
+			on_change: function (query_report) {},
+			get_data: function(txt) {
+				return frappe.db.get_link_options('POS Profile', txt,{"disabled":0});
 			}
 		},
 		{

@@ -12,6 +12,7 @@ def get_columns():
 	columns = []
 	columns.append({'fieldname':'item_code','label':"Item Code",'fieldtype':'Data','options':'Sales Invoice','align':'left','width':150})
 	columns.append({'fieldname':'item_name','label':"Item Name",'fieldtype':'Data','options':'Sales Invoice','align':'left','width':250})
+	columns.append({'fieldname':'pos_profile','label':"POS Profile",'fieldtype':'Data','options':'Sales Invoice','align':'left','width':250})
 	columns.append({'fieldname':'parent_item_group','label':"Item Group",'fieldtype':'Data','options':'Sales Invoice','align':'left','width':250})
 	columns.append({'fieldname':'item_group','label':"Item Category",'fieldtype':'Data','options':'Sales Invoice','align':'left','width':250})
 	columns.append({'fieldname':'TRANSACTION','label':"Transaction",'fieldtype':'Data','options':'Sales Invoice','align':'center','width':100})
@@ -48,6 +49,7 @@ def get_data(filters):
 			SELECT
 				a.item_code,
 				a.item_name,
+				b.pos_profile,
 				a.parent_item_group,
 				a.item_group,
 				coalesce(c.transaction,0) TRANSACTION,
@@ -72,8 +74,10 @@ def get_data(filters):
 			a.parent_item_group,
 			a.item_group,
 			coalesce(c.transaction,0),
-			date_format(b.posting_date,'%%Y/%%m')
+			date_format(b.posting_date,'%%Y/%%m'),
+			b.pos_profile
 			ORDER BY 
+			date_format(b.posting_date,'%%Y/%%m'),
 			a.item_code,
 			a.item_name""".format(get_conditions(filters),filters["start_date"],filters["end_date"])
 	data = frappe.db.sql(sql,filters, as_dict=0)
@@ -91,5 +95,8 @@ def get_conditions(filters):
 		
 	if filters.get("branch"):
 		conditions += " AND b.branch in %(branch)s"
+	
+	if filters.get("pos_profile"):
+		conditions += " AND b.pos_profile in %(pos_profile)s"
 		
 	return conditions
